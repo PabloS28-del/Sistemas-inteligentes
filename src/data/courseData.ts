@@ -28,17 +28,25 @@ export const weeks: Week[] = [
     ],
     homework: [
       {
-        name: "Lectura del sílabo y organización de equipos",
+        name: "Lectura: Knowledge Engineering for Hybrid Intelligent Systems",
         type: "doc",
-        url: "#",
+        url:
+          "/docs/semana-01/S1_Knowledge Engineering for Hybrid Intelligence.pdf",
         description:
-          "Revisión del sílabo y conformación de equipos para el proyecto.",
+          "Artículo base sobre ingeniería del conocimiento para sistemas inteligentes híbridos.",
       },
-      
-      
+      {
+        name: "Lectura: La aplicación de la ingeniería del conocimiento",
+        type: "doc",
+        url:
+          "/docs/semana-01/S1_La aplicación de la ingeniería del conocimiento.pdf",
+        description:
+          "Revisión de la aplicación práctica de la ingeniería del conocimiento.",
+      },
     ],
-    canvaLink: "https://www.canva.com/design/DAGxUc9Qjck/qmnp2_i3gUpUeqwhJ4q9TA/edit",
-    canvaLabel: "Ver presentación en canva" //opcional
+    canvaLink:
+      "https://www.canva.com/design/DAGxUc9Qjck/qmnp2_i3gUpUeqwhJ4q9TA/edit",
+    canvaLabel: "Ver presentación en canva", // opcional
   },
   {
     number: 2,
@@ -52,16 +60,25 @@ export const weeks: Week[] = [
       "Encadenamiento hacia adelante y hacia atrás",
     ],
     homework: [
-      
       {
-        name: "Mini-demo en Python (reglas)",
-        type: "code",
-        url: "#",
+        name: "Lectura: Investigating the Impact of Backtracking",
+        type: "doc",
+        url:
+          "/docs/semana-02/S2_Investigating the Impact of Backward Strategy Learning in a Logic Tutor.pdf",
         description:
-          "Prototipo simple de inferencia con reglas para un dominio acotado.",
+          "Estudio sobre el impacto del backtracking en procesos de inferencia.",
+      },
+      {
+        name: "Lectura: Knowledge Acquisition and Representation",
+        type: "doc",
+        url:
+          "/docs/semana-02/S2_Knowledge Acquisition and Representation for.pdf",
+        description:
+          "Conceptos y prácticas para adquisición y representación de conocimiento.",
       },
     ],
-    canvaLink: "https://www.canva.com/design/DAGxUSE81KY/XkSam1rGltaA5O4jGVyszw/edit"
+    canvaLink:
+      "https://www.canva.com/design/DAGxUSE81KY/XkSam1rGltaA5O4jGVyszw/edit",
   },
 ];
 
