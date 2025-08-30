@@ -1,0 +1,64 @@
+---
+import "@/styles/global.css";
+import PrologInterpreter from "@/components/PrologInterpreter.vue";
+import Layout from "@/layouts/Layout.astro";
+import prologData from "@/data/prologData.ts";
+
+// Generate all possible routes
+export function getStaticPaths() {
+  const paths = [];
+  for (const week of Object.keys(prologData)) {
+    for (const homework of Object.keys(prologData[week])) {
+      paths.push({
+        params: { week, homework }
+      });
+    }
+  }
+  
+  return paths;
+}
+
+// Get week and homework parameters from the URL path
+const { week, homework } = Astro.params;
+
+// Get the content for the current week and homework
+const currentContent = prologData[week]?.[homework] || prologData[week]?.["default"] || {
+  title: "Programación en Prolog",
+  description: "Ejercicios de programación lógica",
+  initialProgram: "% Escribe tu código Prolog aquí\n",
+  sampleQueries: ["% Ejemplo: consulta(X)."],
+};
+---
+
+<Layout>
+  <!-- Load Tau Prolog before the component -->
+  <script is:inline src="/FISI-IA-2025-G6/tau-prolog.js"></script>
+  <script is:inline>
+    // Define missing tau_file_system if not present
+    if (typeof tau_file_system === "undefined") {
+      window.tau_file_system = {
+        files: {},
+        open: function (path, mode, callback) {
+          if (callback) callback(null, path);
+        },
+        read: function (path, callback) {
+          if (callback) callback(null, this.files[path] || "");
+        },
+        write: function (path, data, callback) {
+          this.files[path] = data;
+          if (callback) callback(null);
+        },
+      };
+    }
+  </script>
+
+  <PrologInterpreter
+    client:load
+    title={currentContent.title}
+    description={currentContent.description}
+    initialProgram={currentContent.initialProgram}
+    sampleQueries={currentContent.sampleQueries}
+    sourceCodeUrl={currentContent.sourceCodeUrl}
+    imageUrl={currentContent.imageUrl}
+  />
+</Layout>

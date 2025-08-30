@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>SI 2025-2 | Grupo 4 - Landing Page</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style>
+  html, body {
+    height: 100%;
+    width: 100%;
+    background-color: hsl(220 25% 15%);
+  }
+  body {
+    margin: 0;
+    /* Elimina el flex para que el contenido pueda ser full width */
+    display: block;
+    min-height: 100%;
+    /* Evita scroll horizontal si usas secciones full-bleed */
+    overflow-x: hidden;
+  }
+</style>

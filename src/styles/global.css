@@ -1,0 +1,141 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Dark mode por clase */
+@custom-variant dark (&:is(.dark *));
+
+/* Theme mapping */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* =========================
+   🌙 Paleta azul noche oscuro con celeste profesional
+   ========================= */
+:root {
+  --background: 220 25% 15%; /* azul noche oscuro, menos negro */
+  --foreground: 210 40% 98%;
+
+  --card: 220 25% 18%; /* azul noche medio */
+  --card-foreground: 210 40% 98%;
+
+  --popover: 220 25% 18%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 200 100% 60%; /* celeste profesional */
+  --primary-foreground: 220 25% 15%;
+
+  --secondary: 220 25% 22%; /* azul noche claro */
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 220 25% 20%;
+  --muted-foreground: 210 40% 75%;
+
+  --accent: 190 100% 70%; /* celeste claro */
+  --accent-foreground: 220 25% 15%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 220 25% 25%;
+  --input: 220 25% 25%;
+  --ring: 200 100% 60%;
+
+  --chart-1: 200 100% 60%;
+  --chart-2: 200 100% 70%;
+  --chart-3: 200 100% 80%;
+  --chart-4: 200 100% 90%;
+  --chart-5: 200 100% 95%;
+}
+
+/* Forzar modo oscuro en todo el sitio */
+* {
+  color-scheme: dark;
+}
+
+/* =========================
+   📚 Tipografía global
+   ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    background-color: hsl(220 25% 15%);
+    color-scheme: dark;
+  }
+
+  body {
+    @apply font-sans bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    background-color: hsl(220 25% 15%) !important;
+    min-height: 100vh;
+  }
+
+  #app {
+    background-color: hsl(220 25% 15%);
+    min-height: 100vh;
+  }
+
+  /* Efectos de gradiente y sombras */
+  .tech-gradient {
+    background: linear-gradient(135deg, hsl(220 23% 6%) 0%, hsl(220 23% 10%) 100%);
+  }
+
+  .card-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Animaciones suaves */
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Efectos de hover */
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+}

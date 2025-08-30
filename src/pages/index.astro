@@ -1,0 +1,10 @@
+---
+import "@/styles/global.css";
+import App from "../components/App.vue";
+import Layout from "../layouts/Layout.astro";
+---
+<Layout>
+  <main style="width:100%">
+    <App client:load />
+  </main>
+</Layout>
