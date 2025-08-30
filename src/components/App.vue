@@ -42,7 +42,7 @@ const fondoUrl =
             >
               <span class="text-primary font-semibold">Sistemas Inteligentes</span>
               <span class="h-1 w-1 rounded-full bg-accent"></span>
-              <span class="text-accent font-semibold">Grupo 4</span>
+              <span class="text-accent font-semibold">Grupo 1</span>
             </span>
 
             <h1
