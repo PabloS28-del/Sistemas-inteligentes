@@ -1,10 +1,34 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import LandingNavigation from "./LandingNavigation.vue";
 import { courseInfo, weeks, groupMembers } from "@/data/courseData";
 
 // Imagen de fondo de sistemas inteligentes desde internet
 const fondoUrl =
   "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+
+// ===== Preview de TXT (uno a la vez) =====
+const txtPreviewOpenId = ref<string | null>(null);
+const txtPreviewContent = ref<string>("");
+
+async function toggleTxtPreview(item: any) {
+  const id = item.id || item.url || item.name;
+  if (txtPreviewOpenId.value === id) {
+    txtPreviewOpenId.value = null;
+    txtPreviewContent.value = "";
+    return;
+  }
+  try {
+    const res = await fetch(item.url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    txtPreviewOpenId.value = id;
+    txtPreviewContent.value = text;
+  } catch (err) {
+    txtPreviewOpenId.value = id;
+    txtPreviewContent.value = "No se pudo cargar el archivo.";
+  }
+}
 </script>
 
 <template>
@@ -236,59 +260,97 @@ const fondoUrl =
                     </a>
                   </div>
 
-                  <div class="space-y-2">
+                  <!-- Lista de documentos -->
+                  <div class="space-y-3">
+                    <!-- Contenedor por documento -->
                     <div
                       v-for="doc in week.homework"
                       :key="doc.name"
-                      class="flex items-center gap-2 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition-colors"
+                      class="rounded-lg"
                     >
-                      <!-- Icono según el tipo -->
-                      <div class="flex-shrink-0">
-                        <svg
-                          v-if="doc.type === 'doc'"
-                          class="w-4 h-4 text-blue-400"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M4 18h12V6l-4-4H4v16zm2-14h5v4h4v8H6V4z" />
-                        </svg>
-                        <svg
-                          v-else-if="doc.type === 'slides'"
-                          class="w-4 h-4 text-orange-400"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
-                          />
-                        </svg>
-                        <svg
-                          v-else-if="doc.type === 'assignment'"
-                          class="w-4 h-4 text-green-400"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                        <svg v-else class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M4 18h12V6l-4-4H4v16zm2-14h5v4h4v8H6V4z" />
-                        </svg>
+                      <!-- Fila del documento -->
+                      <div
+                        class="flex items-center gap-2 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition-colors"
+                      >
+                        <!-- Icono según el tipo -->
+                        <div class="flex-shrink-0">
+                          <svg
+                            v-if="doc.type === 'doc'"
+                            class="w-4 h-4 text-blue-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M4 18h12V6l-4-4H4v16zm2-14h5v4h4v8H6V4z" />
+                          </svg>
+                          <svg
+                            v-else-if="doc.type === 'slides'"
+                            class="w-4 h-4 text-orange-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
+                            />
+                          </svg>
+                          <svg
+                            v-else-if="doc.type === 'assignment'"
+                            class="w-4 h-4 text-green-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          <svg v-else class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 18h12V6l-4-4H4v16zm2-14h5v4h4v8H6V4z" />
+                          </svg>
+                        </div>
+
+                        <!-- Información del documento -->
+                        <div class="flex-1 min-w-0">
+                          <a
+                            :href="doc.url"
+                            target="_blank"
+                            class="text-sm text-white hover:text-accent transition-colors font-medium block truncate"
+                          >
+                            {{ doc.name }}
+                          </a>
+                          <p v-if="doc.description" class="text-xs text-primary/70 truncate">
+                            {{ doc.description }}
+                          </p>
+                        </div>
+
+                        <!-- Botonera solo para TXT -->
+                        <div v-if="doc.type === 'txt'" class="ml-auto flex items-center gap-2">
+                          <button
+                            @click.stop="toggleTxtPreview(doc)"
+                            class="px-3 py-1.5 rounded-md bg-white/10 text-white text-xs font-medium hover:bg-white/20 transition"
+                          >
+                            {{
+                              (txtPreviewOpenId === (doc.id || doc.url || doc.name))
+                                ? 'Ocultar'
+                                : 'Previsualizar'
+                            }}
+                          </button>
+
+                          <a
+                            :href="doc.url"
+                            :download="doc.downloadName || (doc.name?.replace(/\s+/g,'_') + '.txt')"
+                            class="px-3 py-1.5 rounded-md bg-primary/90 text-primary-foreground text-xs font-medium hover:bg-primary transition"
+                            @click.stop
+                          >
+                            Descargar
+                          </a>
+                        </div>
                       </div>
 
-                      <!-- Información del documento -->
-                      <div class="flex-1 min-w-0">
-                        <a
-                          :href="doc.url"
-                          target="_blank"
-                          class="text-sm text-white hover:text-accent transition-colors font-medium block truncate"
-                        >
-                          {{ doc.name }}
-                        </a>
-                        <p v-if="doc.description" class="text-xs text-primary/70 truncate">
-                          {{ doc.description }}
-                        </p>
+                      <!-- Área de previsualización para TXT -->
+                      <div
+                        v-if="doc.type === 'txt' && txtPreviewOpenId === (doc.id || doc.url || doc.name)"
+                        class="mt-2 rounded-md bg-black/40 border border-white/10 p-3 max-h-64 overflow-auto"
+                      >
+                        <pre class="text-xs font-mono whitespace-pre-wrap leading-5">{{ txtPreviewContent }}</pre>
                       </div>
                     </div>
                   </div>
@@ -320,7 +382,7 @@ const fondoUrl =
           </div>
         </div>
         <p class="text-lg text-primary/90 font-medium mb-2">
-          © 2025 UNMSM. Grupo 4 – Sistemas Inteligentes.
+          © 2025 UNMSM. Grupo 1 – Sistemas Inteligentes.
         </p>
         <p class="text-sm text-primary/70">
           Desarrollado con tecnologías modernas para una experiencia excepcional
@@ -345,7 +407,7 @@ const fondoUrl =
   box-shadow: 0 12px 32px hsl(200 100% 60% / 0.15);
 }
 
-/* Helpers opcionales por si quieres reutilizar */
+
 .glass {
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(8px);

@@ -80,6 +80,51 @@ export const weeks: Week[] = [
     canvaLink:
       "https://www.canva.com/design/DAGxUSE81KY/XkSam1rGltaA5O4jGVyszw/edit",
   },
+{
+  number: 3,
+  title: "Calidad de Sistemas Expertos: errores comunes e índice de acuerdo",
+  description:
+    "Panorama de calidad en SE: errores frecuentes, criterios y métricas clave, y medición del acuerdo entre expertos (Kappa).",
+  topics: [
+    "Errores habituales en adquisición, representación e inferencia",
+    "Criterios de calidad: exactitud, cobertura, consistencia y explicabilidad",
+    "Verificación y validación de un Sistema Experto",
+    "Acuerdo entre expertos: porcentaje de acuerdo e índice Kappa"
+  ],
+  homework: [
+    {
+      name: "Lectura: Sistemas Expertos — fundamentos, evolución y aplicaciones",
+      type: "doc",
+      url: "/docs/semana-03/S3_Sistemas_Expertos_Fundamentos_Evolucion_Aplicaciones.pdf",
+      description:
+        "Panorama de los SE: bases, evolución histórica, casos de uso; ventajas, límites y vigencia frente a ML/DL."
+    },
+    {
+      name: "Lectura: Hacia la evaluación de calidad en IA (ISO/IEC 25059)",
+      type: "doc",
+      url: "/docs/semana-03/S3_Towards_Quality_Assessment_of_AI_Systems.pdf",
+      description:
+        "Entorno de evaluación de calidad para IA basado en ISO/IEC 25000/25059; caso de Adecuación Funcional y retos frente al software tradicional."
+    },
+    {
+      name: "Lectura: Criterios de validación en sistemas inteligentes",
+      type: "doc",
+      url: "/docs/semana-03/S3_Evaluation_of_Validation_Criteria_on_Intelligent_Systems.pdf",
+      description:
+        "Comparativa de métodos de validación (nominal/ordinal/binario), pros y contras, y recomendaciones prácticas para elegir el criterio adecuado."
+    },
+    {
+      id: "tarea-paraderos",
+      name: "Tarea: Hechos y Reglas (paraderos) — archivo .txt",
+      type: "txt",
+      url: "/docs/semana-03/tarea_paraderos.txt",
+      description:
+        "Descarga y revisa el archivo con hechos y reglas (Prolog). Puedes previsualizarlo aquí mismo."
+    }
+  ],
+  canvaLink: "https://www.canva.com/design/DAGx_M6rnOM/5FURzWkd3l24pg5md6ORJw/edit",
+  canvaLabel: "Ver en Canva"
+  }
 ];
 
 export const groupMembers: GroupMember[] = [

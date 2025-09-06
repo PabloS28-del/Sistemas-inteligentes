@@ -1,0 +1,245 @@
+% HECHOS
+
+% PARADEROS SIGUIENTE
+siguiente(unmsm,grau).
+siguiente(grau,tupac_amaru).
+siguiente(tupac_amaru,puente_nuevo).
+siguiente(puente_nuevo,piramide_de_sol).
+siguiente(piramide_de_sol,san_carlos).
+
+% SUBE EN PARADEROS
+sube(unmsm,javier).
+sube(unmsm,maria).
+sube(unmsm,eduardo).
+sube(grau,camila).
+sube(grau,daniel).
+sube(tupac_amaru,fernando).
+sube(tupac_amaru,andrea).
+sube(puente_nuevo,rosa).
+sube(puente_nuevo,pedro).
+sube(piramide_de_sol,lucia).
+sube(piramide_de_sol,marco).
+
+% BAJA EN PARADEROS
+baja(grau,eduardo).
+baja(tupac_amaru,javier).
+baja(tupac_amaru,maria).
+baja(puente_nuevo,camila).
+baja(puente_nuevo,daniel).
+baja(piramide_de_sol,fernando).
+baja(piramide_de_sol,andrea).
+baja(san_carlos,lucia).
+baja(san_carlos,marco).
+baja(san_carlos,rosa).
+baja(san_carlos,pedro).
+
+% VARONES Y MUJERES
+varon(javier).
+varon(eduardo).
+varon(daniel).
+varon(fernando).
+varon(pedro).
+varon(marco).
+
+mujer(maria).
+mujer(camila).
+mujer(andrea).
+mujer(rosa).
+mujer(lucia).
+
+% ESTUDIANTES Y ADMINISTRATIVOS
+estudiante(javier).
+estudiante(maria).
+estudiante(camila).
+estudiante(fernando).
+estudiante(rosa).
+estudiante(lucia).
+
+% PARADERO
+paradero(unmsm).
+paradero(grau).
+paradero(tupac_amaru).
+paradero(puente_nuevo).
+paradero(piramide_de_sol).
+paradero(san_carlos).
+
+% DEFINICIÓN DE ADMINISTRATIVOS BASADA EN LA EXCLUSIÓN DE ESTUDIANTES
+administrativo(X) :- varon(X), \+ estudiante(X).
+administrativa(X) :- mujer(X), \+ estudiante(X).
+
+% PERSONAL (ADMINISTRATIV@)
+personal(X) :- administrativo(X) ; administrativa(X).
+
+% SIGUIENTES PARADEROS
+siguientes_paraderos(X,Y) :- siguiente(X,Y).
+siguientes_paraderos(X,Y) :- siguiente(Z,Y), siguientes_paraderos(X,Z).
+
+% PARADERO ANTERIOR
+anterior(X,Y) :- siguiente(Y,X).
+
+% ANTERIORES PARADEROS
+
+anteriores_paraderos(X,Y) :- siguientes_paraderos(Y,X).
+
+% OTRA FORMA - ANTERIORES PARADEROS
+% anteriores_paraderos(X,Y) :- anterior(X,Y).
+% anteriores_paraderos(X,Y) :- anterior(X,Z), anteriores_paraderos(Z,Y).
+
+% COSTO (Tiempo) POR TRAMO
+costo_tramo(unmsm,grau,28).
+costo_tramo(grau,tupac_amaru,12).
+costo_tramo(tupac_amaru,puente_nuevo,13).
+costo_tramo(puente_nuevo,piramide_de_sol,5).
+costo_tramo(piramide_de_sol,san_carlos,17).
+
+% REGLAS
+
+
+
+% CALCULAR COSTO
+
+% Calcula el costo total del trayecto de una persona de manera recursiva
+costo_persona(Persona, Costo) :-
+    sube(ParaderoSubida, Persona),
+    baja(ParaderoBajada, Persona),
+    costo_total(ParaderoSubida, ParaderoBajada, Costo).
+
+% Caso base: cuando el paradero de inicio es el mismo que el de fin, el costo es 0
+costo_total(Paradero, Paradero, 0).
+
+% Caso recursivo: sumar el costo del tramo actual al costo total del resto del trayecto
+costo_total(ParaderoInicio, ParaderoFin, Costo) :-
+    siguiente(ParaderoInicio, ParaderoSiguiente),
+    costo_tramo(ParaderoInicio, ParaderoSiguiente, CostoTramo),
+    costo_total(ParaderoSiguiente, ParaderoFin, CostoRestante),
+    Costo is CostoTramo + CostoRestante.
+
+% PARADEROS VIAJADOS 
+
+% Calcula los paraderos intermedios de la persona
+paraderos_intermedios(Persona, ParaderosIntermedios) :-
+    sube(ParaderoSubida, Persona),
+    baja(ParaderoBajada, Persona),
+    paraderos_entre(ParaderoSubida, ParaderoBajada, ParaderosIntermedios).
+
+% Caso base: cuando el paradero de inicio es el mismo que el de fin, no hay paraderos intermedios
+paraderos_entre(Paradero, Paradero, []).
+
+% Caso recursivo: acumula el paradero siguiente en la lista de paraderos intermedios
+paraderos_entre(ParaderoInicio, ParaderoFin, [ParaderoSiguiente | RestoParaderos]) :-
+    siguiente(ParaderoInicio, ParaderoSiguiente),
+    paraderos_entre(ParaderoSiguiente, ParaderoFin, RestoParaderos).
+
+
+% PERSONAS QUE BAJAN
+
+% Mujeres que bajan en un paradero específico
+mujeres_que_bajan(P,M) :- baja(P,M), mujer(M).
+
+% Varones que bajan en un paradero específico
+varones_que_bajan(P,H) :- baja(P,H), varon(H).
+
+% Personal que bajan en un paradero específico
+personal_que_bajan(P,H) :- baja(P,H), personal(H).
+
+% Administrativo varon que bajan en un paradero específico
+administrativos_que_bajan(X,Y) :- baja(X,Y), administrativo(Y).
+
+% Administrativa que bajan en un paradero específico
+administrativas_que_bajan(X,Y) :- baja(X,Y), administrativa(Y).
+
+% Estudiante mujer que bajan en un paradero específico
+estudiantes_mujer_que_bajan(X,Y) :- baja(X,Y), estudiante(Y), mujer(Y).
+
+% Estudiante varon que bajan en un paradero específico
+estudiantes_varon_que_bajan(X,Y) :- baja(X,Y), estudiante(Y), varon(Y).
+
+% Estudiante que bajan en un paradero específico
+estudiantes_que_bajan(X,Y) :- baja(X,Y), estudiante(Y).
+
+% PERSONAS QUE SUBEN
+
+% Mujeres que suben en un paradero específico
+mujeres_que_suben(P,M) :- sube(P,M), mujer(M).
+
+% Varones que suben en un paradero específico
+varones_que_suben(P,H) :- sube(P,H), varon(H).
+
+% Personal que suben en un paradero específico
+personal_que_suben(P,H) :- sube(P,H), personal(H).
+
+% Administrativo varon que suben en un paradero específico
+administrativos_que_suben(X,Y) :- sube(X,Y), administrativo(Y).
+
+% Administrativa que suben en un paradero específico
+administrativas_que_suben(X,Y) :- sube(X,Y), administrativa(Y).
+
+% Estudiante mujer que suben en un paradero específico
+estudiantes_mujer_que_suben(X,Y) :- sube(X,Y), estudiante(Y), mujer(Y).
+
+% Estudiante varon que suben en un paradero específico
+estudiantes_varon_que_suben(X,Y) :- sube(X,Y), estudiante(Y), varon(Y).
+
+% Estudiante que suben en un paradero específico
+estudiantes_que_suben(X,Y) :- sube(X,Y), estudiante(Y).
+
+%Cuantos bajaron en el Paradero X
+num_bajaron(X,N) :- findall(Y,baja(X,Y),Lista),length(Lista,N).
+
+% ---------------------------------
+% LISTA DE PREGUNTAS
+% ---------------------------------
+
+%Pregunta: Cuanto hombres bajaron en el Paradero X
+num_bajaron_hombres(X,N) :- findall(Y,(baja(X,Y),varon(Y)),Lista),length(Lista,N).
+num_bajaron_mujeres(X,N) :- findall(Y,(baja(X,Y),mujer(Y)),Lista),length(Lista,N).
+
+%Pregunta: Cuanto % de hombres bajaron en el Paradero X
+porcentaje_hombres(X,Porcentaje):-
+    num_bajaron_hombres(X,NumHombres),
+    num_bajaron_mujeres(X,NumMujeres),
+    Total is NumHombres + NumMujeres,
+    Porcentaje is NumHombres*100/Total.
+
+%Pregunta: Listar uno por uno los paraderos inicio,intermedios y fin
+paraderos_entre_if(ParaderoInicio,ParaderoFin,ParaderoInicio).
+paraderos_entre_if(ParaderoInicio,ParaderoFin,ParaderoIntermedio) :-
+    paraderos_entre(ParaderoInicio,ParaderoFin,Lista),
+    member(ParaderoIntermedio,Lista).
+
+%Pregunta: cuantos bajaron desde el Paradero X al Paradero Y
+bajaron(ParaderoInicio,ParaderoFin,Persona):-
+    paraderos_entre_if(ParaderoInicio,ParaderoFin,ParaderoIntermedio),
+    baja(ParaderoIntermedio,Persona).
+
+contar_bajaron(ParaderoInicio,ParaderoFin,N) :-
+    findall(Persona,bajaron(ParaderoInicio,ParaderoFin,Persona),Lista),
+    length(Lista,N).
+
+%Pregunta: Cuantos bajaron despues del Paradero X
+paraderos_entre_f(ParaderoInicio,ParaderoFin,ParaderoIntermedio):-
+    paraderos_entre(ParaderoInicio,ParaderoFin,Lista),
+    member(ParaderoIntermedio,Lista).    
+
+bajaron_despues_de(ParaderoInicio,Persona):-
+  	paraderos_entre_f(ParaderoInicio,san_carlos,ParaderoIntermedio),
+    baja(ParaderoIntermedio,Persona).
+
+subieron_estudiante(ParaderoInicio,ParaderoFin,Persona):-
+    paraderos_entre_if(ParaderoInicio,ParaderoFin,ParaderoIntermedio),
+    sube(ParaderoIntermedio,Persona),
+    estudiante(Persona).
+
+subieron_personal(ParaderoInicio,ParaderoFin,Persona):-
+    paraderos_entre_if(ParaderoInicio,ParaderoFin,ParaderoIntermedio),
+    sube(ParaderoIntermedio,Persona),
+    personal(Persona).
+
+pago_total(ParaderoInicio,ParaderoFin,Pago):-
+   findall(Y,subieron_estudiante(ParaderoInicio,ParaderoFin,Y),ListaEst),
+   findall(Y,subieron_personal(ParaderoInicio,ParaderoFin,Y),ListaPer),
+   length(ListaEst,N_estudiantes),
+   length(ListaPer,N_personal),
+   Pago is 1*N_estudiantes + 2*N_personal.
+
+
