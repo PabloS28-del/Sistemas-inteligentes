@@ -80,7 +80,7 @@ export const weeks: Week[] = [
     canvaLink:
       "https://www.canva.com/design/DAGxUSE81KY/XkSam1rGltaA5O4jGVyszw/edit",
   },
-{
+  {
   number: 3,
   title: "Calidad de Sistemas Expertos: errores comunes e índice de acuerdo",
   description:
@@ -124,7 +124,54 @@ export const weeks: Week[] = [
   ],
   canvaLink: "https://www.canva.com/design/DAGx_M6rnOM/5FURzWkd3l24pg5md6ORJw/edit",
   canvaLabel: "Ver en Canva"
+  },
+  {
+  number: 4,
+  title: "Sistemas difusos: conjuntos, pertenencia, operaciones y variables lingüísticas",
+  description:
+    "Introducción práctica a la teoría de conjuntos difusos: funciones de pertenencia, operaciones básicas y uso de variables lingüísticas en toma de decisiones.",
+  topics: [
+    "Conjuntos difusos y funciones de pertenencia",
+    "Operaciones con conjuntos difusos",
+    "Variables lingüísticas y etiquetas",
+    "Modelo lingüístico 2-tuplas (computing with words)",
+  ],
+  homework: [
+    {
+      name:
+        "Lectura: 2-tuple linguistic model — overview, extensiones y retos",
+      type: "doc",
+      url: "/docs/semana-04/S1_2tuple_linguistic_overview.pdf",
+      description:
+        "Panorama del modelo lingüístico 2-tuplas para computing with words, sus extensiones, aplicaciones y desafíos.",
+    },
+    {
+      name:
+        "Lectura: Interpolación con representación funcional de funciones de pertenencia",
+      type: "doc",
+      url: "/docs/semana-04/S2_Interpolation_Function_Space_MF.pdf",
+      description:
+        "Generalización de la interpolación de reglas difusas al espacio funcional; soporte para funciones tipo campana.",
+    },
+    {
+      name: "Lectura: Fuzzy Sets (Zadeh, 1965)",
+      type: "doc",
+      url: "/docs/semana-04/S3_Fuzzy_Sets_Zadeh_1965.pdf",
+      description:
+        "Fundamentos de los conjuntos difusos: pertenencia, operaciones y propiedades.",
+    },
+    {
+      name: "Tarea: Notebook de Google Colab — sistemas difusos",
+      type: "assignment",
+      url: "https://colab.research.google.com/drive/1h-3UBWdpxXziuA3PCPqyQ8ug0K-xPaG-?usp=sharing",
+      description:
+        "Ejercicios guiados en Colab sobre funciones de pertenencia, operaciones difusas y variables lingüísticas.",
+    },
+  ],
+  canvaLink: "https://www.canva.com/design/DAGytqK5ogU/O2ySJ0fhlxZByKBnhEXI6A/edit",
+  canvaLabel: "Ver en Canva"
   }
+
 ];
 
 export const groupMembers: GroupMember[] = [

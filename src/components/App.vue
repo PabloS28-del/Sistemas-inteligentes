@@ -270,7 +270,7 @@ async function toggleTxtPreview(item: any) {
                     >
                       <!-- Fila del documento -->
                       <div
-                        class="flex items-center gap-2 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition-colors"
+                        class="flex flex-wrap sm:flex-nowrap items-center gap-2 p-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition-colors"
                       >
                         <!-- Icono según el tipo -->
                         <div class="flex-shrink-0">
@@ -292,16 +292,14 @@ async function toggleTxtPreview(item: any) {
                               d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
                             />
                           </svg>
-                          <svg
+                          <div
                             v-else-if="doc.type === 'assignment'"
-                            class="w-4 h-4 text-green-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
+                            class="w-5 h-5 rounded-full bg-green-500/25 border border-green-400/60
+                                  grid place-items-center text-green-300"
+                            aria-hidden="true"
                           >
-                            <path
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
+                            <span class="text-[10px] leading-none font-semibold">✓</span>
+                          </div>
                           <svg v-else class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M4 18h12V6l-4-4H4v16zm2-14h5v4h4v8H6V4z" />
                           </svg>
@@ -312,6 +310,7 @@ async function toggleTxtPreview(item: any) {
                           <a
                             :href="doc.url"
                             target="_blank"
+                            rel="noopener"
                             class="text-sm text-white hover:text-accent transition-colors font-medium block truncate"
                           >
                             {{ doc.name }}
@@ -319,6 +318,29 @@ async function toggleTxtPreview(item: any) {
                           <p v-if="doc.description" class="text-xs text-primary/70 truncate">
                             {{ doc.description }}
                           </p>
+                        </div>
+
+                        <!-- CTA especial para tareas (Colab) -->
+                        <div
+                          v-if="doc.type === 'assignment'"
+                          class="ml-auto flex items-center gap-2"
+                        >
+                          <span
+                            class="hidden sm:inline-flex items-center text-[11px] px-2 py-0.5 rounded-full bg-green-500/15 text-green-300 ring-1 ring-green-600/30"
+                          >
+                            Notebook Colab
+                          </span>
+                          <a
+                            :href="doc.url"
+                            target="_blank"
+                            rel="noopener"
+                            class="px-3 py-1.5 rounded-md bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition"
+                          >
+                            Abrir en Colab
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 3h7m0 0v7m0-7L10 14"/>
+                            </svg>
+                          </a>
                         </div>
 
                         <!-- Botonera solo para TXT -->
@@ -406,7 +428,6 @@ async function toggleTxtPreview(item: any) {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px hsl(200 100% 60% / 0.15);
 }
-
 
 .glass {
   background: rgba(255, 255, 255, 0.06);
