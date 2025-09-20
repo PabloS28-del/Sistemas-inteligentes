@@ -1,0 +1,208 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                               %
+%               SISTEMA EXPERTO PARA DIAGNÓSTICO DE HARDWARE DE LAPTOPS           %
+%                                                                               %
+%   Versión: 3.0 (Arquitectura Clásica por Componentes)                         %
+%   Fecha: 2024-09-18                                                           %
+%   Descripción: Código organizado en los 4 componentes canónicos de un         %
+%                Sistema Experto: Motor de Inferencia, Interfaz, Reglas y Hechos.%
+%                                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Directiva global para los hechos dinámicos que se aprenderán durante la consulta.
+:- dynamic sintoma/1.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       SECCIÓN 1: MOTOR DE INFERENCIA
+%
+%   Responsabilidad: Orquestar el proceso de razonamiento. Controla el flujo
+%   de la consulta sin conocer los detalles específicos del dominio (laptops).
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Punto de entrada y predicado principal que controla la ejecución.
+diagnosticar :-
+    limpiar_sintomas,
+    bienvenida,
+    solicitar_sintomas, % Llama a la Interfaz para obtener datos.
+    analizar_fallas,    % Activa el razonamiento sobre las Reglas y Hechos.
+    despedida.
+
+% Predicado para reiniciar la base de conocimiento dinámico.
+limpiar_sintomas :-
+    retractall(sintoma(_)),
+    write('INFO: Base de conocimientos limpia. Listo para un nuevo diagnóstico.'), nl.
+
+% Ciclo principal de inferencia. Itera sobre los hechos y prueba las reglas.
+% Utiliza encadenamiento hacia atrás (backward chaining) inherente de Prolog.
+analizar_fallas :-
+    falla_posible(Falla, Explicacion), % Busca un objetivo en la Base de Hechos.
+    verificar(Falla),                  % Intenta probar ese objetivo usando la Base de Reglas.
+    !, % Corte: Detiene la búsqueda al encontrar la primera solución.
+    presentar_diagnostico(Falla, Explicacion).
+analizar_fallas :-
+    presentar_sin_diagnostico. % Caso en que ninguna regla tuvo éxito.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       SECCIÓN 2: INTERFAZ DE USUARIO
+%
+%   Responsabilidad: Toda la interacción con el usuario. Se encarga de
+%   presentar información (bienvenida, preguntas, resultados) y de capturar
+%   las respuestas (entradas del usuario).
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Mensajes de inicio.
+bienvenida :-
+    write('--- Bienvenido al Sistema Experto de Diagnóstico de Laptops ---'), nl,
+    write('Por favor, responda las siguientes preguntas con "si" o "no".'), nl,
+    write('---------------------------------------------------------------'), nl.
+
+% Predicado genérico de bajo nivel para preguntar y registrar la respuesta.
+preguntar(Pregunta, Hecho) :-
+    write(Pregunta), write(' (si/no): '),
+    read(Respuesta),
+    (Respuesta == si -> assert(sintoma(Hecho)) ; true).
+
+% Orquestador de alto nivel para todas las preguntas.
+solicitar_sintomas :-
+    preguntar_sintomas_energia,
+    preguntar_sintomas_pantalla,
+    preguntar_sintomas_arranque,
+    preguntar_sintomas_rendimiento,
+    preguntar_sintomas_perifericos,
+    preguntar_sintomas_conectividad,
+    preguntar_sintomas_audio.
+
+% Bloques de preguntas por categoría, atribuidos a sus "autores".
+preguntar_sintomas_energia :-
+    preguntar('El equipo no enciende en absoluto?', no_enciende),
+    preguntar('La batería no carga, incluso con el cargador conectado?', no_carga_bateria),
+    preguntar('El LED de estado del cargador (si lo tiene) está apagado?', led_cargador_apagado),
+    preguntar('El equipo solo enciende si está conectado a la corriente?', enciende_solo_conectado),
+    preguntar('La carga de la batería dura muy poco tiempo (minutos)?', bateria_no_dura_nada),
+    preguntar('Un leve movimiento del conector de carga interrumpe la alimentación?', movimiento_causa_desconexion).
+
+preguntar_sintomas_pantalla :-
+    preguntar('La pantalla se queda en negro, pero las luces del teclado o el ventilador se activan?', pantalla_negra_al_encender),
+    preguntar('Aparecen en la pantalla líneas extrañas, colores distorsionados o "artefactos"?', artefactos_o_lineas_en_pantalla),
+    preguntar('Ha conectado la laptop a un monitor o TV externo y no muestra video allí tampoco?', sin_video_en_monitor_externo),
+    preguntar('Si conecta un monitor externo, ¿la imagen se ve correctamente en él?', si_hay_video_en_monitor_externo),
+    preguntar('A pesar de la pantalla negra, ¿escucha el ventilador o ve luces indicadoras encendidas?', equipo_parece_encendido).
+
+preguntar_sintomas_arranque :-
+    preguntar('Aparece un mensaje de error como "No bootable device" o "Operating System not found"?', mensaje_error_no_boot_device),
+    preguntar('El equipo enciende pero se queda "congelado" en la pantalla con el logo del fabricante (ej. HP, Dell)?', no_pasa_del_logo),
+    preguntar('El equipo se congela o se apaga durante el proceso de carga del sistema operativo?', se_congela_en_arranque),
+    preguntar('La laptop intenta arrancar, pero se reinicia en un bucle sin llegar al escritorio?', se_reinicia_constantemente).
+
+preguntar_sintomas_rendimiento :-
+    preguntar('El sistema operativo funciona extremadamente lento, incluso en tareas básicas?', extremadamente_lenta),
+    preguntar('El equipo se apaga solo después de un tiempo de uso, especialmente con tareas exigentes?', se_apaga_de_repente),
+    preguntar('El ventilador suena constantemente muy fuerte o hace ruidos extraños?', ventilador_hace_mucho_ruido),
+    preguntar('Escucha ruidos de "clics" o "rasquidos" provenientes del interior de la laptop?', ruidos_clics_del_disco).
+
+preguntar_sintomas_perifericos :-
+    preguntar('Algunas o todas las teclas del teclado de la laptop no funcionan?', b_FallaTecladoInterno),
+    preguntar('Si conecta un teclado USB externo, ¿funciona correctamente?', b_FuncionaTecladoExterno),
+    preguntar('El touchpad o trackpad no responde o funciona de forma errática?', b_FallaTouchpad),
+    preguntar('Si conecta un mouse USB externo, ¿este funciona bien?', b_FuncionaMouseExterno).
+
+preguntar_sintomas_conectividad :-
+    preguntar('La laptop no detecta ninguna red Wi-Fi?', no_detecta_wifi),
+    preguntar('Otros dispositivos (como tu celular) sí se conectan a la misma red Wi-Fi sin problemas?', otros_dispositivos_si_conectan).
+
+preguntar_sintomas_audio :-
+    preguntar('No se escucha ningún sonido a través de los altavoces integrados?', sin_audio_altavoces),
+    preguntar('Si conectas audífonos, ¿tampoco se escucha sonido por ellos?', sin_audio_auriculares).
+
+% Presentación del resultado final.
+presentar_diagnostico(Falla, Explicacion) :-
+    nl, write('======================================================'), nl,
+    write('DIAGNÓSTICO FINAL:'), nl,
+    write('-> Falla Detectada: '), write(Falla), nl,
+    write('-> Explicación: '), write(Explicacion), nl,
+    write('======================================================'), nl.
+
+presentar_sin_diagnostico :-
+    nl, write('======================================================'), nl,
+    write('DIAGNÓSTICO: No se pudo determinar una falla específica con los síntomas proporcionados.'), nl,
+    write('Sugerencia: Intente proporcionar síntomas más detallados o consulte a un técnico.'), nl,
+    write('======================================================'), nl.
+
+% Mensaje de cierre.
+despedida :-
+    nl, write('--- Fin del Diagnóstico ---'), nl.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   SECCIÓN 3: BASE DE CONOCIMIENTOS - REGLAS
+%
+%   Responsabilidad: Contener el conocimiento experto en forma de reglas
+%   lógicas (inferenciales). Representa el "cómo" se llega a una conclusión.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Reglas del Módulo de Energía (Ing. Ricardo Gómez) ---
+verificar('Falla en el adaptador de corriente (cargador)') :- sintoma(no_enciende), sintoma(no_carga_bateria), sintoma(led_cargador_apagado).
+verificar('Batería defectuosa o agotada') :- sintoma(enciende_solo_conectado), sintoma(bateria_no_dura_nada), \+ sintoma(no_carga_bateria).
+verificar('Falla en el Jack de carga interno') :- sintoma(no_carga_bateria), sintoma(movimiento_causa_desconexion), \+ sintoma(led_cargador_apagado).
+
+% --- Reglas del Módulo de Pantalla (Ing. Laura Pinto) ---
+verificar('Falla de la GPU (Tarjeta de video) o Placa Base') :- sintoma(pantalla_negra_al_encender), sintoma(sin_video_en_monitor_externo), sintoma(equipo_parece_encendido).
+verificar('Falla inminente de la GPU (sobrecalentamiento o soldaduras)') :- sintoma(artefactos_o_lineas_en_pantalla).
+verificar('Pantalla LCD o cable de video (flex) dañado') :- sintoma(pantalla_negra_al_encender), sintoma(si_hay_video_en_monitor_externo).
+
+% --- Reglas del Módulo de Arranque (Ing. Carlos Núñez) ---
+verificar('Falla del disco duro/SSD o sistema operativo corrupto') :- sintoma(mensaje_error_no_boot_device), \+ sintoma(no_pasa_del_logo).
+verificar('Conflicto de hardware o falla en la BIOS/UEFI') :- sintoma(no_pasa_del_logo), sintoma(se_congela_en_arranque).
+verificar('Falla de memoria RAM o corrupción crítica del SO') :- sintoma(se_reinicia_constantemente).
+
+% --- Reglas del Módulo de Rendimiento (Ing. Ana Flores) ---
+verificar('Sobrecalentamiento por obstrucción en el sistema de ventilación') :- sintoma(extremadamente_lenta), sintoma(se_apaga_de_repente), sintoma(ventilador_hace_mucho_ruido).
+verificar('Falla del disco duro mecánico (HDD)') :- sintoma(extremadamente_lenta), sintoma(ruidos_clics_del_disco).
+
+% --- Reglas del Módulo de Periféricos (Ing. Jorge Vega) ---
+verificar('Teclado interno dañado o desconectado') :- sintoma(b_FallaTecladoInterno), sintoma(b_FuncionaTecladoExterno).
+verificar('Touchpad interno dañado o controlador incorrecto') :- sintoma(b_FallaTouchpad), sintoma(b_FuncionaMouseExterno).
+
+% --- Reglas del Módulo de Conectividad y Audio (David Ríos) ---
+verificar('Falla de la tarjeta de red inalámbrica (Wi-Fi)') :- sintoma(no_detecta_wifi), sintoma(otros_dispositivos_si_conectan).
+verificar('Falla de la tarjeta de sonido integrada') :- sintoma(sin_audio_altavoces), sintoma(sin_audio_auriculares).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    SECCIÓN 4: BASE DE CONOCIMIENTOS - HECHOS
+%
+%   Responsabilidad: Contener el conocimiento declarativo y estático del sistema.
+%   Define el universo de objetos y relaciones conocidos (en este caso, las
+%   fallas que el sistema puede diagnosticar).
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+falla_posible('Falla en el adaptador de corriente (cargador)', 'El cargador no está suministrando energía a la laptop. Puede estar dañado o ser incompatible.').
+falla_posible('Batería defectuosa o agotada', 'La batería ha perdido su capacidad de retener carga y necesita ser reemplazada.').
+falla_posible('Falla en el Jack de carga interno', 'El puerto de carga de la laptop está dañado o desoldado, impidiendo el contacto con el cargador.').
+falla_posible('Falla de la GPU (Tarjeta de video) o Placa Base', 'No hay señal de video debido a un fallo crítico en el chip de video o la placa principal. Es una reparación costosa.').
+falla_posible('Falla inminente de la GPU (sobrecalentamiento o soldaduras)', 'Los artefactos visuales son un síntoma clásico de que el chip de video está fallando, a menudo por calor excesivo.').
+falla_posible('Pantalla LCD o cable de video (flex) dañado', 'La señal de video se genera correctamente, pero no llega a la pantalla interna por un daño físico en el panel o su cable.').
+falla_posible('Falla del disco duro/SSD o sistema operativo corrupto', 'La computadora no puede encontrar los archivos de arranque necesarios porque el disco está dañado o el SO está corrupto.').
+falla_posible('Conflicto de hardware o falla en la BIOS/UEFI', 'Un componente de hardware (RAM, disco, USB) impide que el sistema complete la verificación inicial (POST).').
+falla_posible('Falla de memoria RAM o corrupción crítica del SO', 'Un módulo de RAM defectuoso o un error grave en los archivos del sistema operativo provocan un ciclo de reinicios.').
+falla_posible('Sobrecalentamiento por obstrucción en el sistema de ventilación', 'El polvo y la suciedad impiden que el ventilador disipe el calor, provocando que el sistema se proteja apagándose o reduciendo drásticamente su velocidad.').
+falla_posible('Falla del disco duro mecánico (HDD)', 'El disco duro tiene daños mecánicos internos que le impiden leer los datos correctamente, causando lentitud extrema y ruidos.').
+falla_posible('Teclado interno dañado o desconectado', 'El teclado de la laptop tiene un fallo físico. Se requiere su reemplazo o reconexión.').
+falla_posible('Touchpad interno dañado o controlador incorrecto', 'El touchpad no funciona por un problema de hardware o un conflicto con su software controlador.').
+falla_posible('Falla de la tarjeta de red inalámbrica (Wi-Fi)', 'El componente de hardware responsable de la conexión Wi-Fi ha dejado de funcionar.').
+falla_posible('Falla de la tarjeta de sonido integrada', 'El chip de audio de la placa base está dañado, impidiendo la salida de sonido por cualquier vía.').
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       COMENTARIOS FINALES Y EJEMPLOS DE USO
+%
+%   1. Carga este archivo en tu intérprete de Prolog (SWI-Prolog, etc.).
+%      Ej: swipl -s tu_archivo.pl
+%
+%   2. Ejecuta la consulta principal en la consola de Prolog:
+%      ?- diagnosticar.
+%
+%   3. Responde a las preguntas con 'si.' o 'no.' (con el punto final).
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

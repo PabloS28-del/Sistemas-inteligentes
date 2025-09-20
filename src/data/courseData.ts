@@ -170,8 +170,46 @@ export const weeks: Week[] = [
   ],
   canvaLink: "https://www.canva.com/design/DAGytqK5ogU/O2ySJ0fhlxZByKBnhEXI6A/edit",
   canvaLabel: "Ver en Canva"
+  },
+  {
+    number: 5,
+    title: "Lógica difusa: implicaciones, relaciones y reglas. Sistemas de inferencia",
+    description:
+      "Repaso de implicaciones y relaciones difusas, reglas y agregación; y diseño de módulos/tipos de sistemas de inferencia (p. ej. Mamdani, Sugeno).",
+    topics: [
+      "Implicaciones y relaciones difusas",
+      "Reglas difusas y agregación",
+      "Sistemas de inferencia (Mamdani, Sugeno)",
+      "Módulos y tipos de SI difusos"
+    ],
+    homework: [
+      {
+        
+        name: "Artículo: Aggregation of I-transitive fuzzy relations and fuzzy preference relations",
+        type: "doc",
+        url: "/docs/semana-05/aggregation-i-transitive.pdf",
+        description:
+          "Problema: al agregar relaciones/preferencias difusas se pierde transitividad/consistencia; propone agregación que preserve propiedades lógicas."
+      },
+      {
+        name: "Artículo: CI-based feature selection to enhance fuzzy decision-making in cloud",
+        type: "doc",
+        url: "/docs/semana-05/ci-feature-selection-cloud.pdf",
+        description:
+          "Problema: consolidación dinámica de servidores en cloud (NP-Hard). Mejora un sistema difuso con selección de características basada en inteligencia computacional."
+      },
+      {
+        id: "wk5-txt1",
+        name: "Tarea: Reglas/funciones de pertenencia (TXT)",
+        type: "txt",
+        url: "/docs/semana-05/Tarea_Prolog.txt",
+        description:
+          "Descarga y revisa el archivo Prolog. Puedes previsualizarlo aquí mismo."
+      }
+    ],
+    canvaLink: "https://www.canva.com/design/DAGzfOCL7cM/4dLEb0rSOBA9g6EyylX32Q/edit",
+    canvaLabel: "Ver en Canva"
   }
-
 ];
 
 export const groupMembers: GroupMember[] = [
