@@ -209,17 +209,139 @@ export const weeks: Week[] = [
     ],
     canvaLink: "https://www.canva.com/design/DAGzfOCL7cM/4dLEb0rSOBA9g6EyylX32Q/edit",
     canvaLabel: "Ver en Canva"
+  },
+  {
+    number: 6,
+    title: "Sistemas difusos: Mamdani, Sugeno y C-Fuzzy; proyecto SBC",
+    description:
+      "Diferencias clave entre Mamdani y Sugeno, modelado de funciones de pertenencia y reglas; uso de C-Fuzzy (FCM) para extraer estructura y cierre con un mini-proyecto de sistema basado en conocimiento.",
+    topics: [
+      "Mamdani: reglas, agregación y desborrosificación",
+      "Sugeno/TS: salidas funcionales y control",
+      "C-Fuzzy (FCM): particionado difuso y extracción",
+      "Buenas prácticas en proyectos SBC difusos"
+    ],
+    homework: [
+      {
+        name: "Artículo: Verificación de posición en vehículos conectados (Mamdani)",
+        type: "doc",
+        url: "/docs/semana-06/Position_Verification_in_Connected_Vehicles_for_Cyber_Resilience_Using_Geofencing_and_Fuzzy_Logic.pdf",
+        description:
+          "Sistema difuso Mamdani para validar posición vehicular con entradas (distancia, Δvelocidad, dirección) y nivel de confianza; reduce falsos positivos y mejora ciber-resiliencia."
+      },
+      {
+        name: "Artículo: Gestión energética PV+BESS con controlador Sugeno (TS-Fuzzy)",
+        type: "doc",
+        url: "/docs/semana-06/1-s2.0-S0952197625022110-main.pdf",
+        description:
+          "Modelo PV+BESS con TS-Fuzzy (MPPT, filtro activo y compensación reactiva); armónicos < 4.2% (IEEE-519), transiciones estables y viabilidad económica en entornos industriales."
+      },
+      {
+        name: "Artículo: Mejora de imágenes submarinas con fusión y Fuzzy C-Means (SPV)",
+        type: "doc",
+        url: "/docs/semana-06/Position_Verification_in_Connected_Vehicles_for_Cyber_Resilience_Using_Geofencing_and_Fuzzy_Logic.pdf",
+        description:
+          "Método híbrido con dehazing por espectro previo, corrección de color y módulo de visibilidad vía Fuzzy C-Means; supera 14 métodos en contraste y fidelidad de color."
+      },
+      {
+        name: "Artículo propio: Simulación del control de temperatura con Lógica Difusa",
+        type: "doc",
+        url: "https://docs.google.com/document/d/1DK9WwBuE8l0xjwPCcxSDxnYhNB0EJ-RJZQw9gVIue8I/edit?usp=sharing",
+        description:
+          "Simulación en Python de control de temperatura para una habitación con entradas (temperatura actual y número de personas) y salida de enfriamiento; variables lingüísticas, funciones de pertenencia y base de reglas. Resultados muestran una respuesta flexible y cercana al razonamiento humano. Palabras clave: lógica difusa, control de temperatura, simulación, aire acondicionado."
+      },
+      {
+        id: "wk6-txt1",
+        name: "Tarea: Reglas/control_difuso_LR (TXT)",
+        type: "txt",
+        url: "/docs/semana-06/control_difuso_LR.txt",
+        description:
+          "Descarga y revisa el archivo Prolog. Puedes previsualizarlo aquí mismo."
+      }
+    ],
+    canvaLink: "https://www.canva.com/design/DAGz5SMXW94/YPe6NCXLdls5hwAc5JAFvg/edit",
+    canvaLabel: "Ver en Canva"
+  },
+  {
+    number: 7,
+    title: "Metaheurísticas y Optimización: Gradiente, Recocido Simulado y más",
+    description:
+      "Introducción práctica a metaheurísticas y métodos de optimización: gradiente (y variantes aceleradas), recocido simulado y esquemas híbridos con GA/GNN aplicados a planificación y diseño.",
+    topics: [
+      "Gradiente descendente (acelerado) y fine-tuning",
+      "Recocido simulado para optimización combinatoria",
+      "Inventarios y reposicionamiento bajo incertidumbre",
+      "Optimización guiada por GNN y algoritmos genéticos"
+    ],
+    homework: [
+      {
+        name: "Artículo: AGD-DGA para planificación de movimiento robótico",
+        type: "doc",
+        url: "/docs/semana-07/1-s2.0-S0957417423032967-main.pdf",
+        description:
+          "Método híbrido basado en gradiente descendente acelerado y un GA de mutagénesis dirigida para optimizar tiempo, energía e impacto en trayectorias robóticas."
+      },
+      {
+        name: "Artículo: Reposicionamiento de contenedores con Programación Dinámica + Recocido Simulado",
+        type: "doc",
+        url: "/docs/semana-07/1-s2.0-S1568494624012262-main.pdf",
+        description:
+          "Modelo estocástico para inventarios y reposicionamiento de contenedores bajo demanda no estacionaria; resolución con PD y recocido simulado."
+      },
+      {
+        name: "Artículo: Optimización de acero de refuerzo con GNN + GA",
+        type: "doc",
+        url: "/docs/semana-07/1-s2.0-S0926580522005477-main.pdf",
+        description:
+          "Pipeline automático para diseño de barras de refuerzo libre de colisiones integrando GNN y algoritmos genéticos exploratorios; grandes ahorros de tiempo de cómputo."
+      },
+      {
+        name: "Tarea 1: Sistema de Clasificación de Ambiente con FCM",
+        type: "assignment",
+        description:
+          "Sistema que clasifica el ambiente (normal, intrusión, incendio) usando FCM a partir de sensores de temperatura, vibración y distancia.",
+        links: [
+          { label: "CFuzzy – Entrenamiento", url: "https://github.com/DavisLCVB/CFuzzySistem" },
+          { label: "CFuzzy – Prototipo", url: "https://github.com/DavisLCVB/CFuzzyPrototipe" },
+          { label: "CFuzzy – Simulación (Wokwi)", url: "https://wokwi.com/projects/443767541862967297" },
+          { label: "Video (Drive)", url: "https://drive.google.com/file/d/1LH0V856V5U4YNuA2NdZVaoVzqO5rdU9z/view?usp=drive_link" }
+        ]
+      },
+      {
+        name: "Tarea 2: Sistema Difuso Mamdani para Control Automático de Iluminación",
+        type: "assignment",
+        description:
+          "Control difuso Mamdani que regula la cantidad de LEDs encendidos según el nivel de luz ambiental (oscura, media, brillante).",
+        links: [
+          { label: "Prototipo", url: "https://www.tinkercad.com/things/5MKP8qAk6Hq-luces?sharecode=S9D-JCBHmEbCGM4xv-T0eaXDsosUJqnMzb9s1OAv7Jo" },
+          { label: "Video (Drive)", url: "https://drive.google.com/file/d/1P3cy89S86xT53bZIoqAH8wW1Ekq3PPqd/view?usp=drive_link" },
+          { label: "Código", url: "https://docs.google.com/document/d/1X_W61RizzfZInmvYwxY6L5Xcg-zXIDaw9nHyRPPoB0k/edit?usp=drive_link" }
+        ]
+      },
+      {
+        name: "Tarea 3: Sistema difuso tipo Sugeno para control de intensidad (Temp/Humedad) con LCD I2C",
+        type: "assignment",
+        description:
+          "Sistema Sugeno con 9 reglas y funciones triangulares que calcula una salida de intensidad en función de temperatura y humedad; muestra resultados en LCD I2C y por serial.",
+        links: [
+          { label: "Prototipo", url: "https://www.tinkercad.com/things/lg3QawiaV4K-sugeno?sharecode=aa6v0mgcgGvzzUsN5O3Bz9s1QqknRb7XB9-CtAv77zo" },
+          { label: "Video (Drive)", url: "https://drive.google.com/file/d/12bWY2Q8VnUKsOapyuas0UaBuLSx-koOL/view?usp=drive_link" },
+          { label: "Código", url: "https://docs.google.com/document/d/1PjviTMDQyQ-zic9c_Vipo95E94b6iH3izH3Z4UoF1rU/edit?usp=drive_link" }
+        ]
+      }
+    ],
+    canvaLink: "https://www.canva.com/design/DAG0x-U4yJI/wWzkTpivCA4z8y174RCU7g/edit",
+    canvaLabel: "Ver en Canva"
   }
 ];
 
 export const groupMembers: GroupMember[] = [
-  { name: "Sosa Lupuche, Carlos Manuel", code: "" },
-  { name: "Valdiviezo Goicochea, Wisner", code: "" },
-  { name: "Rugel Alva, Miguel Aarom", code: "" },
-  { name: "Benites Pardavé, Eder Gustavo", code: "" },
-  { name: "Santillan Chihuala, Paul Gustavo", code: "" },
-  { name: "Suarez Bautista, Pablo", code: "" },
-  { name: "Martinez Ochoa, Santos Eduardo", code: "" },
+  { name: "Sosa Lupuche, Carlos Manuel", code: "22200197" },
+  { name: "Rugel Alva, Miguel Aarom", code: "21200037"},
+  { name: "Cartagena Valera Brush, Davis Leonardo", code: "22200193" },
+  { name: "Santillan Chihuala, Paul Gustavo", code: "21200071" },
+  { name: "Suarez Bautista, Pablo", code: "22200132" },
+  { name: "Martinez Ochoa, Santos Eduardo", code: "20200098" },
   { name: "Yaipen Diaz, Imanol", code: "" },
 ];
 

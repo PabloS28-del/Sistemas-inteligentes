@@ -315,34 +315,52 @@ async function toggleTxtPreview(item: any) {
                           >
                             {{ doc.name }}
                           </a>
-                          <p v-if="doc.description" class="text-xs text-primary/70 truncate">
+                          <p
+                            v-if="doc.description"
+                            class="text-xs text-primary/70 clamp-2"
+                            :title="doc.description"
+                          >
                             {{ doc.description }}
                           </p>
                         </div>
 
-                        <!-- CTA especial para tareas (Colab) -->
-                        <div
-                          v-if="doc.type === 'assignment'"
-                          class="ml-auto flex items-center gap-2"
-                        >
-                          <span
-                            class="hidden sm:inline-flex items-center text-[11px] px-2 py-0.5 rounded-full bg-green-500/15 text-green-300 ring-1 ring-green-600/30"
-                          >
-                            Notebook Colab
-                          </span>
-                          <a
-                            :href="doc.url"
-                            target="_blank"
-                            rel="noopener"
-                            class="px-3 py-1.5 rounded-md bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition"
-                          >
-                            Abrir en Colab
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 3h7m0 0v7m0-7L10 14"/>
-                            </svg>
-                          </a>
-                        </div>
+                        <!-- ASSIGNMENT: si hay links, muéstralos; si no, botón Colab -->
+                        <div v-if="doc.type === 'assignment'" class="ml-auto flex flex-wrap items-center gap-2">
+                          <!-- A) Conjunto de enlaces (Semana 7) -->
+                          <template v-if="doc.links && doc.links.length">
+                            <a
+                              v-for="lnk in doc.links"
+                              :key="lnk.url"
+                              :href="lnk.url"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-xs font-semibold text-white"
+                            >
+                              {{ lnk.label }}
+                            </a>
+                          </template>
 
+                          <!-- B) Botón Colab clásico (Semana 4) -->
+                          <template v-else>
+                            <span
+                              class="hidden sm:inline-flex items-center text-[11px] px-2 py-0.5 rounded-full bg-green-500/15 text-green-300 ring-1 ring-green-600/30"
+                            >
+                              Notebook Colab
+                            </span>
+                            <a
+                              :href="doc.url"
+                              target="_blank"
+                              rel="noopener"
+                              class="px-3 py-1.5 rounded-md bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition"
+                            >
+                              Abrir en Colab
+                              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 3h7m0 0v7m0-7L10 14"/>
+                              </svg>
+                            </a>
+                          </template>
+                        </div>
+                      
                         <!-- Botonera solo para TXT -->
                         <div v-if="doc.type === 'txt'" class="ml-auto flex items-center gap-2">
                           <button
@@ -427,6 +445,13 @@ async function toggleTxtPreview(item: any) {
 .hover-lift:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px hsl(200 100% 60% / 0.15);
+}
+/* Limita el párrafo a 2 líneas con '...' */
+.clamp-2{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .glass {

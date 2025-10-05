@@ -1,0 +1,297 @@
+% control_difuso_LR_yMeta.m
+% Movimiento principal: izquierda -> derecha
+% Meta: cruzar el borde derecho (x=300) a la altura y = ydeseado
+% Escena: X en [0,300], Y en [0,250]
+
+clear; clc; close all;
+PI = 3.141592;
+
+% ===================== Entradas =====================
+xini = input('Introduce coordenada inicial  x (0..300): ');
+yini = input('Introduce coordenada inicial  y (0..250): ');
+Pini = input('Introduce inclinacion inicial  P (grados): ');
+ydeseado = input('Introduce coordenada objetivo en y (0..250): ');
+
+% ===================== Nº de conjuntos difusos =====================
+kE = 7;   % antes kX; ahora modela el "error" vertical (y respecto a ydeseado)
+kP = 7;
+kD = 7;
+
+% ===================== MF del Error (antes X) =====================
+% NOTA: mantenemos tu partición original (0..100 aprox). Vamos a mapear
+% el error vertical con: enuevo = y + 50 - ydeseado, de modo que caiga
+% alrededor de [0,100] cuando y ~ (ydeseado ± 50).
+Erango = [ 0        25+10
+           25-10     40+3 
+           40-3      48+2  
+           48-2      52+2
+           52-2      60+3
+           60-3      75+10
+           75-10     100];
+
+LE0 = Erango(1,1); LE1 = (Erango(1,1)+Erango(1,2))/2; LE2 = Erango(1,2);
+LEC1 = Erango(2,1); LEC2 = (Erango(2,1)+Erango(2,2))/2; LEC3 = Erango(2,2);
+LC1 = Erango(3,1);  LC2 = (Erango(3,1)+Erango(3,2))/2;  LC3 = Erango(3,2);
+CE1 = Erango(4,1);  CE2 = (Erango(4,1)+Erango(4,2))/2;  CE3 = Erango(4,2);
+RC1 = Erango(5,1);  RC2 = (Erango(5,1)+Erango(5,2))/2;  RC3 = Erango(5,2);
+RIC1= Erango(6,1);  RIC2= (Erango(6,1)+Erango(6,2))/2;  RIC3= Erango(6,2);
+RI1 = Erango(7,1);  RI2 = (Erango(7,1)+Erango(7,2))/2;  RI3 = Erango(7,2);
+
+% ===================== MF de P (Phi, en grados) =====================
+Prango = [-92   5+9
+           5-9  45+9 
+          45-9  81+9 
+          81-5   99+5
+          99-9  135+9
+         135-9  175+9
+         175-9  272 ];
+
+RB1 = Prango(1,1); RB2 = (Prango(1,1)+Prango(1,2))/2; RB3 = Prango(1,2);
+RU1 = Prango(2,1); RU2 = (Prango(2,1)+Prango(2,2))/2; RU3 = Prango(2,2);
+RV1 = Prango(3,1); RV2 = (Prango(3,1)+Prango(3,2))/2; RV3 = Prango(3,2);
+VE1 = Prango(4,1); VE2 = (Prango(4,1)+Prango(4,2))/2; VE3 = Prango(4,2);
+LV1 = Prango(5,1); LV2 = (Prango(5,1)+Prango(5,2))/2; LV3 = Prango(5,2);
+LU1 = Prango(6,1); LU2 = (Prango(6,1)+Prango(6,2))/2; LU3 = Prango(6,2);
+LB1 = Prango(7,1); LB2 = (Prango(7,1)+Prango(7,2))/2; LB3 = Prango(7,2);
+
+% ===================== MF de D (Delta, salida) =====================
+Drango= [ -60   -34+10
+          -34-8   -15+5
+          -15-5   -1.5+.5
+          -1.5-.5  1.5+.5
+           1.5-.5   15+5
+           15-5    34+8
+           34-10   60    ];
+
+NB0 = Drango(1,1); NB1 = Drango(1,1); NB2 = Drango(1,2);
+NM1 = Drango(2,1); NM2 = (Drango(2,1)+Drango(2,2))/2; NM3 = Drango(2,2);
+NS1 = Drango(3,1); NS2 = (Drango(3,1)+Drango(3,2))/2; NS3 = Drango(3,2);
+ZE1 = Drango(4,1); ZE2 = (Drango(4,1)+Drango(4,2))/2; ZE3 = Drango(4,2);
+PS1 = Drango(5,1); PS2 = (Drango(5,1)+Drango(5,2))/2; PS3 = Drango(5,2);
+PM1 = Drango(6,1); PM2 = (Drango(6,1)+Drango(6,2))/2; PM3 = Drango(6,2);
+PB1 = Drango(7,1); PB2 = Drango(7,2); PB3 = Drango(7,2);
+
+% ===================== Base de reglas (P filas × Error columnas → D) =====================
+BaseReg = [ 6  6  6  6  7  7  7
+            3  6  7  6  7  7  7
+            1  2  7  7  6  7  7
+            1  1  2  4  6  7  7
+            1  1  2  1  1  6  7
+            1  1  1  2  1  2  5
+            1  1  1  2  2  2  2 ];
+
+% ===================== Estado y parámetros =====================
+x = xini; y = yini; P = Pini;
+Prad = P*(PI/180);        % radianes
+r = 0.5;                  % paso por iteración
+L = 12;                   % distancia entre ejes (modelo bicicleta)
+countmax = 2000;          % escena grande -> más iteraciones
+
+% ===================== Figura MF (opcional) =====================
+figure(1);
+subplot(3,1,1);  % Error (antes X)
+Ex = [ LE0 LE1 LE2 LEC1 LEC2 LEC3 LC1 LC2 LC3 CE1 CE2 CE3 RC1 RC2 RC3 RIC1 RIC2 RIC3 RI1 RI2 RI3 ];
+Ey = [ 1   1   0   0    1    0    0   1   0   0   1   0   0   1   0   0    1    0    0   1   1 ];
+plot(Ex,Ey,'g'); grid on; title('Funciones de Pertenencia'); ylabel('Error (y vs ydeseado)');
+
+subplot(3,1,2); % Phi
+Phx = [ RB1 RB2 RB3 RU1 RU2 RU3 RV1 RV2 RV3 VE1 VE2 VE3 LV1 LV2 LV3 LU1 LU2 LU3 LB1 LB2 LB3 ];
+Phy = [ 0   1   0   0   1   0   0   1   0   0   1   0   0   1   0   0   1   0   0   1   0   ];
+plot(Phx,Phy,'r'); grid on; ylabel('Phi (grados)');
+
+subplot(3,1,3); % Delta
+Dex = [ NB0 NB1 NB2 NM1 NM2 NM3 NS1 NS2 NS3 ZE1 ZE2 ZE3 PS1 PS2 PS3 PM1 PM2 PM3 PB1 PB2 PB3 ];
+Dey = [ 1   1   0   0   1   0   0   1   0   0   1   0   0   1   0   0   1   0   0   1   1 ];
+plot(Dex,Dey,'y'); grid on; ylabel('Delta (salida)');
+
+% ===================== Simulación =====================
+xx = []; yy = []; PP = []; dd = [];
+
+for count = 1:countmax
+    % -------- Error vertical (map a ~[0,100]) --------
+    enuevo = y + 50 - ydeseado;
+
+    % -------- Regiones activas del Error --------
+    numE = 0; valueE = [];
+    for n = 1:kE
+        rangomin = Erango(n,1); rangomax = Erango(n,2);
+        if (enuevo >= rangomin) && (enuevo <= rangomax)
+            numE = numE + 1;
+            valueE(numE,1) = n; % índice de la región
+        end
+    end
+
+    % -------- Regiones activas de P --------
+    numP = 0; valueP = [];
+    for nP = 1:kP
+        rangomin = Prango(nP,1); rangomax = Prango(nP,2);
+        if (P >= rangomin) && (P <= rangomax)
+            numP = numP + 1;
+            valueP(numP,1) = nP;
+        end
+    end
+
+    % Si no hay activaciones, que avance recto
+    if (numE==0) || (numP==0)
+        DxG = 0;
+    else
+        % -------- Fuzzificación del Error --------
+        for i = 1:numE
+            ve = valueE(i,1);
+            if(ve==1)
+                if( enuevo < LE1 ), fpe = 1;
+                elseif( enuevo <= LE2 ), fpe = 1 - ((enuevo-LE1)/(LE2-LE1)); end
+            elseif(ve==2)
+                if( enuevo < LEC2 && enuevo >= LEC1 ), fpe = (enuevo-LEC1)/(LEC2-LEC1);
+                elseif( enuevo <= LEC3 ), fpe = 1 - ((enuevo-LEC2)/(LEC3-LEC2)); end
+            elseif(ve==3)
+                if( enuevo < LC2 && enuevo >= LC1 ), fpe = (enuevo-LC1)/(LC2-LC1);
+                elseif( enuevo <= LC3 ), fpe = 1 - ((enuevo-LC2)/(LC3-LC2)); end
+            elseif(ve==4)
+                if( enuevo < CE2 && enuevo >= CE1 ), fpe = (enuevo-CE1)/(CE2-CE1);
+                elseif( enuevo <= CE3 ), fpe = 1 - ((enuevo-CE2)/(CE3-CE2)); end
+            elseif(ve==5)
+                if( enuevo < RC2 && enuevo >= RC1 ), fpe = (enuevo-RC1)/(RC2-RC1);
+                elseif( enuevo <= RC3 ), fpe = 1 - ((enuevo-RC2)/(RC3-RC2)); end
+            elseif(ve==6)
+                if( enuevo < RIC2 && enuevo >= RIC1 ), fpe = (enuevo-RIC1)/(RIC2-RIC1);
+                elseif( enuevo <= RIC3 ), fpe = 1 - ((enuevo-RIC2)/(RIC3-RIC2)); end
+            else % ve==7
+                if( enuevo < RI2 && enuevo >= RI1 ), fpe = (enuevo-RI1)/(RI2-RI1);
+                elseif( enuevo >= RI2 ), fpe = 1; end
+            end
+            valueE(i,2) = fpe;
+        end
+
+        % -------- Fuzzificación de P --------
+        for j = 1:numP
+            vP = valueP(j,1);
+            if(vP==1)
+                if(P < RB2 && P >= RB1), fpP=(P-RB1)/(RB2-RB1);
+                elseif(P <= RB3), fpP=1 - ((P-RB2)/(RB3-RB2)); end
+            elseif(vP==2)
+                if(P < RU2 && P >= RU1), fpP=(P-RU1)/(RU2-RU1);
+                elseif(P <= RU3), fpP=1 - ((P-RU2)/(RU3-RU2)); end
+            elseif(vP==3)
+                if(P < RV2 && P >= RV1), fpP=(P-RV1)/(RV2-RV1);
+                elseif(P <= RV3), fpP=1 - ((P-RV2)/(RV3-RV2)); end
+            elseif(vP==4)
+                if(P < VE2 && P >= VE1), fpP=(P-VE1)/(VE2-VE1);
+                elseif(P <= VE3), fpP=1 - ((P-VE2)/(VE3-VE2)); end
+            elseif(vP==5)
+                if(P < LV2 && P >= LV1), fpP=(P-LV1)/(LV2-LV1);
+                elseif(P <= LV3), fpP=1 - ((P-LV2)/(LV3-LV2)); end
+            elseif(vP==6)
+                if(P < LU2 && P >= LU1), fpP=(P-LU1)/(LU2-LU1);
+                elseif(P <= LU3), fpP=1 - ((P-LU2)/(LU3-LU2)); end
+            else % vP==7
+                if(P < LB2 && P >= LB1), fpP=(P-LB1)/(LB2-LB1);
+                elseif(P <= LB3), fpP=1 - ((P-LB2)/(LB3-LB2)); end
+            end
+            valueP(j,2) = fpP;
+        end
+
+        % -------- Reglas activas (Mamdani: min) --------
+        kkd = 1; valueD = [];
+        for i = 1:numE
+            for j = 1:numP
+                De = valueE(i,1); DP = valueP(j,1);
+                valueD(kkd,1) = BaseReg(DP,De);
+                valueD(kkd,2) = min(valueE(i,2), valueP(j,2));
+                kkd = kkd + 1;
+            end
+        end
+        numD = size(valueD,1);
+
+        % -------- Agregación y Centroide --------
+        dD = 0.1;
+        DD = -30:dD:30; nnD = numel(DD);
+        Dbase = zeros(numD, nnD);
+
+        for nD = 1:numD
+            vD = valueD(nD,1); minD = valueD(nD,2);
+            for k = 1:nnD
+                tD = DD(k);
+                mu = 0;
+                if(vD==1)      % NB
+                    if(tD < NB1), mu=1;
+                    elseif(tD < NB2), mu = 1 - ((tD-NB1)/(NB2-NB1));
+                    else, mu=0; end
+                elseif(vD==2)  % NM
+                    if(tD > NM1 && tD <= NM2), mu=(tD-NM1)/(NM2-NM1);
+                    elseif(tD > NM2 && tD <= NM3), mu=1-((tD-NM2)/(NM3-NM2));
+                    else, mu=0; end
+                elseif(vD==3)  % NS
+                    if(tD > NS1 && tD <= NS2), mu=(tD-NS1)/(NS2-NS1);
+                    elseif(tD > NS2 && tD <= NS3), mu=1-((tD-NS2)/(NS3-NS2));
+                    else, mu=0; end
+                elseif(vD==4)  % ZE
+                    if(tD > ZE1 && tD <= ZE2), mu=(tD-ZE1)/(ZE2-ZE1);
+                    elseif(tD > ZE2 && tD <= ZE3), mu=1-((tD-ZE2)/(ZE3-ZE2));
+                    else, mu=0; end
+                elseif(vD==5)  % PS
+                    if(tD > PS1 && tD <= PS2), mu=(tD-PS1)/(PS2-PS1);
+                    elseif(tD > PS2 && tD <= PS3), mu=1-((tD-PS2)/(PS3-PS2));
+                    else, mu=0; end
+                elseif(vD==6)  % PM
+                    if(tD > PM1 && tD <= PM2), mu=(tD-PM1)/(PM2-PM1);
+                    elseif(tD > PM2 && tD <= PM3), mu=1-((tD-PM2)/(PM3-PM2));
+                    else, mu=0; end
+                else           % PB
+                    if(tD <= PB1), mu=0;
+                    elseif(tD <= PB2), mu=(tD-PB1)/(PB2-PB1);
+                    else, mu=1; end
+                end
+                Dbase(nD,k) = min(mu, minD);
+            end
+        end
+
+        maxDbase = max(Dbase,[],1);
+        AreaD = sum(maxDbase)*dD;
+        if AreaD <= eps
+            DxG = 0;                % sin activación -> mantener recto
+        else
+            DxG = ( (dD.*maxDbase) * DD' ) / AreaD;
+        end
+        DxG = max(-30, min(30, DxG));  % saturación
+    end
+
+    % -------- Log y cinemática --------
+    xx(end+1,1) = x; yy(end+1,1) = y; PP(end+1,1) = P; dd(end+1,1) = DxG;
+
+    % Modelo bicicleta: actualiza orientación
+    Prad = Prad - (r/L)*tan((PI/180)*(-DxG));
+    Prad = atan2(sin(Prad), cos(Prad));  % normaliza a (-pi,pi]
+    P = Prad*180/PI;
+
+    % Avance en el plano (para avanzar a +X, usa Pini ~ 0°)
+    x = x + r*cos(Prad);
+    y = y + r*sin(Prad);
+
+    % -------- Paro por borde derecho --------
+    if (x > 300)
+        break;
+    end
+end
+
+disp(' ');
+disp('Animacion Start.   Presione una tecla');
+pause;
+
+% ===================== Animación =====================
+figure(2); clf; hold on; axis([0 300 0 250]); axis equal;
+% Marco y línea-meta horizontal (y = ydeseado)
+plot([0 300 300 0 0],[0 0 250 250 0],'y-','LineWidth',1.5);
+plot([0 300],[ydeseado ydeseado],'c--','LineWidth',1.2);
+
+A = 6; L = 12;
+for k = 1:3:numel(xx)
+    xz = xx(k); yz = yy(k); Pz = PP(k)*PI/180;
+    x1 = xz + (A/2)*sin(Pz); y1 = yz - (A/2)*cos(Pz);
+    x2 = xz - (A/2)*sin(Pz); y2 = yz + (A/2)*cos(Pz);
+    xF = xz - (L/2)*cos(Pz); yF = yz - (L/2)*sin(Pz);
+    x3 = xF - (A/2)*sin(Pz); y3 = yF + (A/2)*cos(Pz);
+    x4 = xF + (A/2)*sin(Pz); y4 = yF - (A/2)*cos(Pz);
+    plot([x1 x2 x3 x4 x1],[y1 y2 y3 y4 y1],'r-','LineWidth',1.2);
+    drawnow; pause(0.05);
+end
