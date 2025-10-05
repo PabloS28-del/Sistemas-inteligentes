@@ -342,7 +342,7 @@ export const groupMembers: GroupMember[] = [
   { name: "Santillan Chihuala, Paul Gustavo", code: "21200071" },
   { name: "Suarez Bautista, Pablo", code: "22200132" },
   { name: "Martinez Ochoa, Santos Eduardo", code: "20200098" },
-  { name: "Yaipen Diaz, Imanol", code: "" },
+  { name: "Yaipen Diaz, Imanol", code: "19200051"}
 ];
 
 // Si no quieres mostrar otros grupos, deja esto vacío:
