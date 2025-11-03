@@ -332,13 +332,71 @@ export const weeks: Week[] = [
     ],
     canvaLink: "https://www.canva.com/design/DAG0x-U4yJI/wWzkTpivCA4z8y174RCU7g/edit",
     canvaLabel: "Ver en Canva"
-  }
+  },
+  {
+  // Semana combinada 09–10
+  number: 10,
+  title: "Fundamentos de Deep Learning + Algoritmos de Entrenamiento",
+  description:
+    "Introducción a redes neuronales y aprendizaje profundo; forward/backward propagation, optimizadores y buenas prácticas de entrenamiento.",
+  topics: [
+    "Deep Learning vs. ML clásico",
+    "Perceptrón y redes feed-forward",
+    "Funciones de activación y pérdidas",
+    "Forward & backward propagation",
+    "Optimizadores (SGD, Momentum, Adam)",
+    "Regularización: dropout, batch norm"
+  ],
+  homework: [
+    {
+      id: "wk09-10-art1",
+      name: "Artículo: Applicability of Genetic Algorithms for Stock Market Prediction (Survey)",
+      type: "doc",
+      url: "/docs/semana-10/1-s2.0-S1574013724000364-main.pdf",
+      description:
+        "Revisión sistemática (2013-2022) del uso de algoritmos genéticos en pronóstico bursátil: selección de características y tuning de hiperparámetros para mejorar precisión."
+    }
+  ],
+  canvaLink: "https://www.canva.com/design/DAG2zcmQz7Y/3_JuCBZskbADLOygRImUpg/edit",
+  canvaLabel: "Ver diapositivas (Semanas 09-10)"
+},
+{
+  number: 11,
+  title: "Machine Learning vs. Sistemas Expertos; RSL y caso aplicado (FuzzyGrow)",
+  description:
+    "Repaso de aprendizaje automático (tipos y fases), contraste con sistemas expertos (reglas vs. datos), lectura guiada de un caso real con Big Data+ML para predicción deportiva y un artículo propio de control difuso con autocalibración (FuzzyGrow).",
+  topics: [
+    "Aprendizaje: definición y condiciones (tarea, métrica, experiencia)",
+    "Tipos de ML: supervisado, no supervisado y refuerzo",
+    "Fases de un proyecto de ML: datos → preprocesamiento → entrenamiento → validación → implementación",
+    "Sistemas Expertos vs. ML: conocimiento explícito vs. patrones; explicabilidad vs. desempeño",
+    "Aplicaciones: diagnóstico/explicabilidad (SE) y predicción/optimización (ML)"
+  ],
+  homework: [
+    {
+      name: "Artículo: Game-Predicting Expert System (NHL) con Big Data + ML",
+      type: "doc",
+      url: "/docs/semana-11/1-s2.0-S0957417419302556-main.pdf",
+      description:
+        "Integra PCA, pruebas no paramétricas y modelos ML (SVM, ensambles) para predecir resultados NHL con >90% de precisión; muestra cómo un sistema experto apoyado por datos escala a decisiones deportivas."
+    },
+    {
+      name: "Artículo propio: FuzzyGrow — Riego inteligente con Lógica Difusa (Arduino)",
+      type: "doc",
+      url: "/docs/semana-11/FuzzyGrow.pdf",
+      description:
+        "Control difuso Sugeno de humedad/luz/temperatura con máquina de estados y autocalibración de dosis (ρ) en Arduino UNO; reduce error relativo y mantiene humedad del sustrato en rango objetivo."
+    }
+  ],
+  canvaLink: "https://www.canva.com/design/DAG3J_UW-0g/2I063M_VKxvrcwy04HePtQ/edit",
+  canvaLabel: "Ver en Canva"
+}
 ];
 
 export const groupMembers: GroupMember[] = [
   { name: "Sosa Lupuche, Carlos Manuel", code: "22200197" },
   { name: "Rugel Alva, Miguel Aarom", code: "21200037"},
-  { name: "Cartagena Valera Brush, Davis Leonardo", code: "22200193" },
+  { name: "Cartagena Valera Brush, Davis Leonardo", code: "22200193" },
   { name: "Santillan Chihuala, Paul Gustavo", code: "21200071" },
   { name: "Suarez Bautista, Pablo", code: "22200132" },
   { name: "Martinez Ochoa, Santos Eduardo", code: "20200098" },
