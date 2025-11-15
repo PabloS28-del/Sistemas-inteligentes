@@ -390,6 +390,59 @@ export const weeks: Week[] = [
   ],
   canvaLink: "https://www.canva.com/design/DAG3J_UW-0g/2I063M_VKxvrcwy04HePtQ/edit",
   canvaLabel: "Ver en Canva"
+},
+{
+  number: 12,
+  title: "Algoritmos de Machine Learning: Supervisados y No Supervisados",
+  description:
+    "Introducción práctica a algoritmos fundamentales de ML: regresión lineal y logística para aprendizaje supervisado; KNN, clustering y otros métodos para aprendizaje no supervisado.",
+  topics: [
+    "Algoritmos supervisados: Regresión lineal",
+    "Algoritmos supervisados: Regresión logística",
+    "Algoritmos no supervisados: KNN",
+    "Algoritmos no supervisados: Clustering y otros"
+  ],
+  homework: [
+  ],
+  canvaLink: "https://www.canva.com/design/DAG4EyIMaJw/ysVWeWLS5N9jOwzbl8rafA/edit",
+  canvaLabel: "Ver en Canva"
+},
+{
+  number: 13,
+  title: "Redes Neuronales Artificiales: Fundamentos y Perceptrón",
+  description:
+    "Introducción a las redes neuronales artificiales: desde la neurona biológica hasta arquitecturas multicapa; perceptrón simple y multicapa.",
+  topics: [
+    "La neurona biológica y las redes RNA",
+    "Tipos de RNA y arquitectura",
+    "Perceptrón Unicapa",
+    "Perceptrón Multicapa"
+  ],
+  homework: [
+    {
+      name: "Artículo: 1D Convolutional Neural Networks and Applications — A Survey",
+      type: "doc",
+      url: "/docs/semana-13/1D_CNN_Survey.pdf",
+      description:
+        "Revisión comprehensiva de redes neuronales convolucionales 1D (1D CNNs) y sus aplicaciones en ingeniería, enfocándose en ventajas sobre CNNs 2D para procesamiento de señales 1D con datos limitados. Metodología: arquitectura compacta con capas CNN 1D + MLP densas, entrenamiento mediante backpropagation con menor complejidad computacional. Resultados: ECG 99% precisión en arritmias ventriculares, detección estructural 100% precisión sin falsos positivos (45x más rápido que tiempo real), detección de fallas en motores/rodamientos 100% precisión con mínima complejidad computacional."
+    },
+    {
+      name: "Artículo: Deep Physical Neural Networks Trained with Backpropagation",
+      type: "doc",
+      url: "/docs/semana-13/Deep_Physical_Neural_Networks.pdf",
+      description:
+        "Introduce redes neuronales físicas profundas (PNNs) entrenadas con backpropagation mediante un algoritmo híbrido in situ-in silico llamado Physics-Aware Training (PAT), que permite entrenar sistemas físicos controlables para ejecutar DNNs sin isomorfismo matemático con capas convencionales. Metodología: PAT ejecuta forward pass por el sistema físico real, backward pass mediante modelo digital diferenciable. Sistemas físicos experimentales: óptica no lineal (SHG), circuito electrónico analógico, oscilaciones mecánicas. Entrenamiento con PyTorch usando funciones autodiff personalizadas que combinan transformaciones físicas reales con gradientes estimados. Resultados: Clasificación de vocales (SHG) 93% precisión vs. 40% con entrenamiento in silico puro, MNIST: Óptica 97%, Electrónica 93%, Mecánica 87% de precisión. Mitigación automática de ruido e imperfecciones mediante entrenamiento in situ. PNNs híbridas físico-digitales aprenden a cooperar automáticamente usando PAT."
+    },
+    {
+      name: "Artículo propio: Sistema de Riego Inteligente con Lógica Difusa y Autocalibración en Arduino UNO",
+      type: "doc",
+      url: "/docs/semana-13/Sistema_Riego_Inteligente_Fuzzy.pdf",
+      description:
+        "Sistema de riego inteligente basado en lógica difusa implementado en Arduino UNO para cultivos de pequeña escala. Integra control multivariable (humedad del suelo, temperatura ambiente y luminosidad) con mecanismo de autocalibración que ajusta automáticamente la ganancia del riego según desempeño observado. Problemática: sistemas bang-bang consumen hasta 64L en 8 días vs. 46L con lógica difusa; dinámica hídrica rápida en macetas requiere control adaptativo multivariable. Implementación de bajo costo en microcontrolador económico (Arduino UNO) para democratizar acceso a agricultura inteligente, mejorando eficiencia hídrica y estabilidad ambiental mediante transiciones graduales y decisiones estables basadas en reglas lingüísticas."
+    }
+  ],
+  canvaLink: "https://www.canva.com/design/DAG4ZyovxqA/Ta_3YtivU-e-cjTyKXGk1w/edit",
+  canvaLabel: "Ver en Canva"
 }
 ];
 

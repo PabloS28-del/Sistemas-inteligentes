@@ -228,37 +228,38 @@ async function toggleTxtPreview(item: any) {
                   </span>
                 </div>
 
-                <!-- Documentos + botón Canva a la derecha -->
-                <div v-if="week.homework && week.homework.length > 0" class="mt-4">
-                  <div class="mb-2 flex items-center justify-between">
-                    <h4 class="text-sm font-semibold text-white/90">Documentos</h4>
-                    <a
-                      v-if="week.canvaLink"
-                      :href="week.canvaLink"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md
-                             bg-white/5 ring-1 ring-white/10 text-white hover:bg-white/10
-                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30
-                             transition"
+                <!-- Botón Canva (siempre visible si existe el link) -->
+                <div v-if="week.canvaLink" class="mb-4">
+                  <a
+                    :href="week.canvaLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-md
+                           bg-white/5 ring-1 ring-white/10 text-white hover:bg-white/10
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30
+                           transition font-medium text-sm"
+                  >
+                    Ver en Canva
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      Ver en Canva
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M14 3h7m0 0v7m0-7L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M14 3h7m0 0v7m0-7L10 14"
+                      />
+                    </svg>
+                  </a>
+                </div>
+
+                <!-- Documentos -->
+                <div v-if="week.homework && week.homework.length > 0" class="mt-4">
+                  <h4 class="text-sm font-semibold text-white/90 mb-2">Documentos</h4>
 
                   <!-- Lista de documentos -->
                   <div class="space-y-3">
@@ -401,7 +402,7 @@ async function toggleTxtPreview(item: any) {
               <!-- Columna derecha: número grande -->
               <div class="ml-6 text-right hidden sm:block">
                 <div class="text-2xl font-bold text-accent">
-                  {{ String(idx + 1).padStart(2, "0") }}
+                  {{ String(week.number).padStart(2, "0") }}
                 </div>
                 <div class="text-[10px] text-primary/70 font-medium">SEMANA</div>
               </div>
