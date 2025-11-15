@@ -436,7 +436,7 @@ export const weeks: Week[] = [
     {
       name: "Artículo propio: Sistema de Riego Inteligente con Lógica Difusa y Autocalibración en Arduino UNO",
       type: "doc",
-      url: "/docs/semana-13/Sistema_Riego_Inteligente_Fuzzy.pdf",
+      url: "/docs/semana-13/Grupo01_Difuso_paper.pdf",
       description:
         "Sistema de riego inteligente basado en lógica difusa implementado en Arduino UNO para cultivos de pequeña escala. Integra control multivariable (humedad del suelo, temperatura ambiente y luminosidad) con mecanismo de autocalibración que ajusta automáticamente la ganancia del riego según desempeño observado. Problemática: sistemas bang-bang consumen hasta 64L en 8 días vs. 46L con lógica difusa; dinámica hídrica rápida en macetas requiere control adaptativo multivariable. Implementación de bajo costo en microcontrolador económico (Arduino UNO) para democratizar acceso a agricultura inteligente, mejorando eficiencia hídrica y estabilidad ambiental mediante transiciones graduales y decisiones estables basadas en reglas lingüísticas."
     }
