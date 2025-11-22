@@ -443,6 +443,37 @@ export const weeks: Week[] = [
   ],
   canvaLink: "https://www.canva.com/design/DAG4ZyovxqA/Ta_3YtivU-e-cjTyKXGk1w/edit",
   canvaLabel: "Ver en Canva"
+},
+{
+  number: 14,
+  title: "Redes Neuronales Convolucionales (CNN)",
+  description:
+    "Introducción a las CNN: arquitectura, operación de convolución, filtros/kernels, y aplicaciones en diagnóstico médico, reconocimiento facial y detección de COVID-19.",
+  topics: [
+    "¿Qué es una Red Neuronal Convolucional (CNN)?",
+    "Convolución y Filtros/Kernels",
+    "Aplicaciones: Diagnóstico médico por imagen",
+    "Aplicaciones: Redes sociales y reconocimiento facial",
+    "Arquitecturas CNN: 3D U-Net y SqueezeNet"
+  ],
+  homework: [
+    {
+      name: "Artículo: 3D U-Net — Learning Dense Volumetric Segmentation from Sparse Annotation",
+      type: "doc",
+      url: "/docs/semana-14/3D_UNet_Sparse_Annotation.pdf",
+      description:
+        "Red neuronal convolucional 3D que aprende a generar segmentaciones volumétricas densas a partir de anotaciones escasas (solo algunos slices anotados). Problemática: La anotación de volúmenes 3D completos es extremadamente tediosa porque solo se pueden visualizar slices 2D, slices vecinos contienen información redundante, y anotar slice-por-slice consume tiempo excesivo. Solución: Arquitectura 3D U-Net que permite aprender de anotaciones dispersas para generar segmentaciones completas."
+    },
+    {
+      name: "Artículo: A light CNN for detecting COVID-19 from CT scans of the chest",
+      type: "doc",
+      url: "/docs/semana-14/Light_CNN_COVID19_CT.pdf",
+      description:
+        "CNN ligera basada en SqueezeNet para clasificar CT torácicas en COVID-19 vs no COVID-19. Problemática: El diagnóstico rápido de COVID-19 es crucial, pero las pruebas RT-PCR tienen baja sensibilidad y la evaluación manual de CT es lenta. Muchos hospitales carecen de hardware potente. Metodología: Arquitectura con Batch Normalization, activaciones ELU, optimización bayesiana (Learning Rate, Momentum, L2), data augmentation y 10-fold cross-validation. Resultados: Accuracy 85.03%, Sensibilidad 87.55%, Especificidad 81.95%, F1-Score 86.20%. Procesamiento: 1.25s/imagen (con GPU), 7.81s/imagen (sin GPU). Conclusión: CNN precisa, rápida y apta para hospitales con recursos limitados."
+    }
+  ],
+  canvaLink: "https://www.canva.com/design/DAG5MsDKPAE/RZB5D4MfjU1a7neIlt4yAQ/edit",
+  canvaLabel: "Ver en Canva"
 }
 ];
 
