@@ -51,3 +51,18 @@ export interface OtherGroup {
   name: string;
   url: string;
 }
+
+export interface ExamMember {
+  name: string;
+  code: string;
+}
+
+export interface ExamInfo {
+  title: string;
+  subtitle: string;
+  members: ExamMember[];
+  description: string;
+  github: string;
+  pdf: string;
+  highlights: string[];
+}
