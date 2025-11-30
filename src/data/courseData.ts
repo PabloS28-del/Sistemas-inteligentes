@@ -474,6 +474,44 @@ export const weeks: Week[] = [
   ],
   canvaLink: "https://www.canva.com/design/DAG5MsDKPAE/RZB5D4MfjU1a7neIlt4yAQ/edit",
   canvaLabel: "Ver en Canva"
+},
+{
+  number: 15,
+  title: "Inteligencia Artificial Generativa y Ecosistemas Inteligentes",
+  description:
+    "Exploración de la IA generativa para toma de decisiones inteligentes y su aplicación en ecosistemas multidisciplinarios. Incluye análisis de modelos generativos, deep learning para fenómenos astronómicos, y clasificación automática de residuos con CNNs.",
+  topics: [
+    "IA Generativa: conceptos y aplicaciones",
+    "GenAI para toma de decisiones multidisciplinarias",
+    "Deep Learning aplicado a astronomía: Curvas de luz transitorias",
+    "Ecosistemas Inteligentes y marcos integrados",
+    "Clasificación automática con CNNs: caso de estudio"
+  ],
+  homework: [
+    {
+      name: "Artículo: Generative AI for decision-making — A multidisciplinary perspective",
+      type: "doc",
+      url: "/docs/semana-15/GenAI_Decision_Making.pdf",
+      description:
+        "Revisión sistemática sobre IA generativa en toma de decisiones. Problemática: GenAI está transformando decisiones en múltiples dominios pero la investigación está fragmentada. Cuatro problemas centrales: limitaciones en precisión y confiabilidad diagnóstica (hallucinations y sesgos), escasez de marcos integrados multidisciplinarios, desafíos éticos (sesgo, desinformación, falta de explicabilidad), y necesidad de sistemas personalizados eficientes. Objetivo: Análisis temático enfocado en mejora de precisión/eficiencia/personalización, aplicaciones diversas, identificación de prácticas innovadoras, integración de frameworks multi-agente con supervisión humana, y desarrollo de estrategias regulatorias robustas. DOI: 10.48550/arXiv.2408.06627"
+    },
+    {
+      name: "Artículo: ParSNIP — Generative Models of Transient Light Curves with Physics-enabled Deep Learning",
+      type: "doc",
+      url: "/docs/semana-15/ParSNIP_Transient_Light_Curves.pdf",
+      description:
+        "Modelos generativos de curvas de luz transitorias con deep learning habilitado por física. Contexto: Los transitorios astronómicos (supernovas, kilonovas, estallidos luminosos) son fenómenos temporales que cambian rápidamente de brillo y luego desaparecen. Las curvas de luz muestran cómo cambia el brillo con el tiempo, permitiendo identificar el tipo de evento, distancia, energía y propiedades físicas. El redshift ocurre cuando un objeto espacial se aleja: la luz se estira aumentando su longitud de onda, volviéndose más roja. ParSNIP utiliza deep learning con física incorporada para generar y analizar estas curvas de luz, mejorando la comprensión de eventos astronómicos extremos. DOI: 10.3847/1538-3881/ac2a2d"
+    },
+    {
+      name: "Artículo propio: Sistema de Clasificación Automática de Residuos mediante CNNs con Dataset Propio",
+      type: "doc",
+      url: "/docs/semana-15/Sistema_Clasificacion_Residuos_CNN.pdf",
+      description:
+        "Sistema de clasificación automática de residuos (plástico, papel, orgánico) usando Redes Neuronales Convolucionales entrenadas con dataset propio. Contexto: La inadecuada segregación de residuos limita el reciclaje y aumenta la contaminación. Solución: CNN estilo VGG-like con 3 bloques convolucionales (32→64→128 filtros) + BatchNorm + Dropout, entrenada con TensorFlow/Keras. Dataset: 40-80 imágenes por clase con data augmentation (rotaciones, zoom, flips). Preprocesamiento: imágenes 224×224px normalizadas a [0,1]. Resultados: Precisión competitiva con clase plástico mostrando mejor desempeño; orgánico fue la más desafiante. El modelo exportado en .h5 permite predicción inmediata con altos niveles de confianza. Metodología escalable aplicable a sistemas IoT, móviles o web. Referencias incluyen AlexNet (Krizhevsky 2012), TrashNet (Yang & Thung 2016) y técnicas de augmentation (Shorten & Khoshgoftaar 2019)."
+    }
+  ],
+  canvaLink: "https://www.canva.com/design/DAG5i-v_LM0/GNlNwochrr0wN-7vEIc_Ng/edit",
+  canvaLabel: "Ver en Canva"
 }
 ];
 
